@@ -1,1 +1,3 @@
 = erlib
+
+Erlang Utility Library

@@ -1,7 +1,7 @@
 PROJECT = erlib
-PROJECT_DESCRIPTION = New project
+PROJECT_DESCRIPTION = Erlang Utility Library
 PROJECT_VERSION = 0.1.0
 
-DEPS = 
+DEPS =
 
 include erlang.mk
