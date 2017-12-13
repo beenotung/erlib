@@ -1,7 +1,7 @@
 %%%
 %%% Utils Functions
 %%%
--module(utils).
+-module(erlib).
 
 %% OTP functions
 -export([get_sup_child/2]).
@@ -11,8 +11,8 @@
 %% OTP functions
 get_sup_child(Sup_Mod, Child_Name) ->
   Sup = whereis(Sup_Mod),
-  Childs = supervisor:which_children(Sup),
-  case lists:keyfind(Child_Name, 1, Childs) of
+  Children = supervisor:which_children(Sup),
+  case lists:keyfind(Child_Name, 1, Children) of
     false ->
       {error, not_found};
     {Child_Name, Pid, _, _} ->
