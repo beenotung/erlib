@@ -1,6 +1,6 @@
 PROJECT = erlib
 PROJECT_DESCRIPTION = Erlang Utility Library
-PROJECT_VERSION = 0.1.3
+PROJECT_VERSION = 0.2.0
 
 DEPS =
 
