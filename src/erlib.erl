@@ -23,10 +23,24 @@ get_sup_child(Sup_Mod, Child_Name) ->
   end.
 
 %% build general worker child_spec
-gen_child_spec(Mod) ->
-  gen_child_spec(Mod, []).
-gen_child_spec(Mod, Args) ->
+gen_child_spec(Mod) when is_atom(Mod) ->
+  gen_child_spec(Mod, []);
+gen_child_spec(Opts) when is_list(Opts) ->
+  gen_child_spec(maps:from_list(Opts));
+gen_child_spec(Opts) when is_map(Opts) ->
+  Mod = maps:get(mod, Opts),
+  Args = maps:get(args, Opts, []),
+  Func_Name = maps:get(func, Opts, start_link),
+  case maps:get(global, Opts) of
+    true ->
+      {Mod, {{global, Mod}, Func_Name, Args},
+        permanent, 1000, worker, [Mod]};
+    _ ->
+      {Mod, {Mod, Func_Name, Args},
+        permanent, 1000, worker, [Mod]}
+  end.
+gen_child_spec(Mod, Args) when is_atom(Mod), is_list(Args) ->
   gen_child_spec(Mod, start_link, Args).
-gen_child_spec(Mod, Func_Name, Args) ->
+gen_child_spec(Mod, Func_Name, Args) when is_atom(Mod), is_atom(Func_Name), is_list(Args) ->
   {Mod, {Mod, Func_Name, Args},
     permanent, 1000, worker, [Mod]}.
