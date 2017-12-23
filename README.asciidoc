@@ -1,3 +1,21 @@
 = erlib
 
 Erlang Utility Library
+
+== Known Issue
+`erlib:gen_child_spec/1` with global flag generate incorrect child spec.
+The working way is like this:
+```erlang
+start_link() ->
+    global:trans({?MODULE, ?MODULE}, fun() ->
+        case gen_server:start_link({global, ?MODULE}, ?MODULE, [], []) of
+            {ok, Pid} ->
+                {ok, Pid};
+            {error, {already_started, Pid}} ->
+                link(Pid),
+                {ok, Pid};
+            Else -> Else
+        end
+    end).
+```
+(source: https://stackoverflow.com/questions/4459431/erlang-best-way-for-a-singleton-gen-server-in-erlang-cluster)
